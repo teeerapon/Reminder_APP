@@ -1,24 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
+import { IntlProvider } from 'react-intl';
+import { styled, useTheme } from '@mui/material/styles';
+import { AnimatePresence } from "framer-motion";
+import { Route, Routes, useLocation, useParams } from "react-router";
+import Reminder_page from "./Reminder_page"
+import MuiAppBar from '@mui/material/AppBar';
 
 function App() {
+  const location = useLocation();
+  const theme = useTheme();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <IntlProvider>
+      <AnimatePresence exitBeforeEnter>
+        <Routes key={location.pathname} location={location}>
+          <Route path="/" element={<Reminder_page />} />
+        </Routes>
+      </AnimatePresence>
+    </IntlProvider>
   );
 }
 
