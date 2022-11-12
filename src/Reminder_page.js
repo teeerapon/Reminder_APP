@@ -43,10 +43,17 @@ export default function SignUp() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="sm">
         <CssBaseline />
-        <Paper elevation={3} sx={{ p: 3, pt: 1, marginTop: 3, }}>
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            pt: 1,
+            mt: 2,
+            mb: 2,
+          }}
+        >
           <Box
             sx={{
-              marginTop: 1,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
