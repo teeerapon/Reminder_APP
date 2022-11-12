@@ -14,6 +14,22 @@ import Paper from '@mui/material/Paper';
 const theme = createTheme();
 
 export default function SignUp() {
+
+  const [forms, setForms] = React.useState(
+    [
+      {
+        remind_name: "",
+        tel: "",
+        email: "",
+        gps: "",
+        remind_width: "",
+        remind_distance: "",
+        remind_area: "",
+        land_number: "",
+        remark: "",
+      }
+    ]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,7 +58,7 @@ export default function SignUp() {
             <Typography component="h1" variant="h5">
               ลงทะเบียน
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -122,6 +138,15 @@ export default function SignUp() {
                     name="remind_distance"
                     label="ระยะห่างถนน"
                     id="remind_distance"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    variant="standard"
+                    name="land_number"
+                    label="เลขที่ดิน"
+                    id="land_number"
                   />
                 </Grid>
                 <Grid item xs={12}>
