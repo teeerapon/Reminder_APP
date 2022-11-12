@@ -15,20 +15,17 @@ const theme = createTheme();
 
 export default function SignUp() {
 
-  const [forms, setForms] = React.useState(
-    [
-      {
-        remind_name: "",
-        tel: "",
-        email: "",
-        gps: "",
-        remind_width: "",
-        remind_distance: "",
-        remind_area: "",
-        land_number: "",
-        remark: "",
-      }
-    ]);
+  const [forms, setForms] = React.useState([{
+    remind_name: "",
+    tel: "",
+    email: "",
+    gps: "",
+    remind_width: "",
+    remind_distance: "",
+    remind_area: "",
+    land_number: "",
+    remark: "",
+  }]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -166,12 +163,6 @@ export default function SignUp() {
                     id="remark"
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
               </Grid>
               <Button
                 type="submit"
