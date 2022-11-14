@@ -129,7 +129,7 @@ export default function SignUp() {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-      Axios.post('http://192.168.220.1:32001/api/NewNTI_Station_Create', body, { headers })
+      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
           if (response) {
             navigate('/Successfully_Page')
