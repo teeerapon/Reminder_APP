@@ -29,23 +29,17 @@ export default function SignUp() {
   const [checked_name, setChecked_name] = React.useState(1)
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
-  const { coords } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: false,
-      },
-      userDecisionTimeout: 5000,
-    });
 
-  const getLocation = () => {
+
+  const onSuccess = (location) => {
     const FromValues = {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: coords.latitude,
-      Longitude: coords.longitude,
+      Latitude: location.coords.latitude,
+      Longitude: location.coords.longitude,
       Area_width: forms.Area_width,
       Area_road: forms.Area_road,
       Area_total: forms.Area_total,
@@ -53,8 +47,28 @@ export default function SignUp() {
       Remark: forms.Remark,
     }
     setForms(FromValues)
-  }
+};
 
+const onError = (error) => {
+    alert({
+        loaded: true,
+        error: {
+            code: error.code,
+            message: error.message,
+        },
+    });
+};
+
+React.useEffect(() => {
+    if (!("geolocation" in navigator)) {
+        onError({
+            code: 0,
+            message: "Geolocation not supported",
+        });
+    }
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+}, []);
 
   const handle_sumbitForms = (event) => {
     event.preventDefault();
@@ -443,7 +457,7 @@ export default function SignUp() {
                         endAdornment: (
                           <InputAdornment position="start">
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <IconButton type="button" sx={{ p: '10px' }} color="primary" onClick={getLocation}>
+                            <IconButton type="button" sx={{ p: '10px' }} color="primary">
                               <DirectionsIcon />
                             </IconButton>
                           </InputAdornment>
