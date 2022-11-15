@@ -17,7 +17,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Outlet, useNavigate } from "react-router";
 import AnimatedPage from './AnimatedPage';
 import Axios from "axios"
-import { useGeolocated } from "react-geolocated";
 
 const theme = createTheme();
 
@@ -30,45 +29,31 @@ export default function SignUp() {
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
 
+  const getLocation = () => {
+    fetch(
+      "https://geolocation-db.com/json/0f761a30-fe14-11e9-b59f-e53803842572"
+    )
+      .then(response => response.json())
+      .then(data => {
+        const FromValues = {
+          Name: forms.Name,
+          Tell: forms.Tell,
+          Email: forms.Email,
+          Owner_Name: forms.Owner_Name,
+          Owner_Tell: forms.Owner_Tell,
+          Latitude: data.latitude,
+          Longitude: data.longitude,
+          Area_width: forms.Area_width,
+          Area_road: forms.Area_road,
+          Area_total: forms.Area_total,
+          NumberArea: forms.NumberArea,
+          Remark: forms.Remark,
+        }
+        setForms(FromValues)
+      });
 
-  const onSuccess = (location) => {
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: location.coords.latitude,
-      Longitude: location.coords.longitude,
-      Area_width: forms.Area_width,
-      Area_road: forms.Area_road,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-    }
-    setForms(FromValues)
-};
+  }
 
-const onError = (error) => {
-    alert({
-        loaded: true,
-        error: {
-            code: error.code,
-            message: error.message,
-        },
-    });
-};
-
-React.useEffect(() => {
-    if (!("geolocation" in navigator)) {
-        onError({
-            code: 0,
-            message: "Geolocation not supported",
-        });
-    }
-
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
-}, []);
 
   const handle_sumbitForms = (event) => {
     event.preventDefault();
@@ -457,7 +442,7 @@ React.useEffect(() => {
                         endAdornment: (
                           <InputAdornment position="start">
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <IconButton type="button" sx={{ p: '10px' }} color="primary">
+                            <IconButton type="button" sx={{ p: '10px' }} color="primary" onClick={getLocation}>
                               <DirectionsIcon />
                             </IconButton>
                           </InputAdornment>
