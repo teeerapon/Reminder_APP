@@ -44,8 +44,8 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: coords.latitude,
-      Longitude: coords.longitude,
+      Latitude: coords.latitude ?? null,
+      Longitude: coords.longitude ?? null,
       Area_width: forms.Area_width,
       Area_road: forms.Area_road,
       Area_total: forms.Area_total,
@@ -428,7 +428,7 @@ export default function SignUp() {
                       onChange={handleChange_Owner_Tell}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <Typography variant="body2" sx={{ pb: 1 }}>
                       พิกัดสถานที่
                     </Typography>
@@ -450,7 +450,7 @@ export default function SignUp() {
                         ),
                       }}
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2">
                       ขนาดพื้นที่
