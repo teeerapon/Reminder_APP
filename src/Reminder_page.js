@@ -22,29 +22,20 @@ const theme = createTheme();
 
 export default function SignUp() {
 
-  const [forms, setForms] = React.useState([{ Name: "", Tell: "", Email: "", Latitude: "", Longitude: "", Area_width: "", Area_road: "", Area_total: "", NumberArea: "", Remark: "" }]);
+  const [forms, setForms] = React.useState([{ Name: "", Tell: "", Email: "", Owner_Name: "", Owner_Tell: "", Latitude: "", Longitude: "", Area_width: "", Area_road: "", Area_total: "", NumberArea: "", Remark: "" }]);
   const [size, setSize] = React.useState([{ farm: "", work: "", wa: "" }])
   const navigate = useNavigate();
   const [checked_name, setChecked_name] = React.useState(1)
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
-  const [location, setLocation] = React.useState({
-    loaded: false,
-    coordinates: { lat: "", lng: "" },
-  });
 
   const onSuccess = (location) => {
-    setLocation({
-      loaded: true,
-      coordinates: {
-        lat: location.coords.latitude,
-        lng: location.coords.longitude,
-      },
-    });
     const FromValues = {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: location.coords.latitude,
       Longitude: location.coords.longitude,
       Area_width: forms.Area_width,
@@ -56,26 +47,16 @@ export default function SignUp() {
     setForms(FromValues)
   };
 
-  const onError = (error) => {
-    setLocation({
-      loaded: true,
-      error: {
-        code: error.code,
-        message: error.message,
-      },
-    });
-  };
-
   const getUserGeolocationDetails = (event) => {
     event.preventDefault();
     if (!("geolocation" in navigator)) {
-      onError({
+      alert({
         code: 0,
         message: "Geolocation not supported",
       });
     }
 
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    navigator.geolocation.getCurrentPosition(onSuccess);
   };
 
   const handle_sumbitForms = (event) => {
@@ -117,6 +98,8 @@ export default function SignUp() {
         Name: forms.Name,
         Tell: forms.Tell,
         Email: forms.Email,
+        Owner_Name: forms.Owner_Name,
+        Owner_Tell: forms.Owner_Tell,
         Latitude: forms.Latitude,
         Longitude: forms.Longitude,
         Area_width: forms.Area_width,
@@ -144,6 +127,8 @@ export default function SignUp() {
       Name: event.target.value,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -161,6 +146,8 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: event.target.value,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -179,6 +166,46 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: event.target.value,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: forms.Latitude,
+      Longitude: forms.Longitude,
+      Area_width: forms.Area_width,
+      Area_road: forms.Area_road,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
+    }
+    setForms(FromValues)
+  }
+
+  const handleChange_Owner_Name = (event) => {
+    event.preventDefault();
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: event.target.value,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: forms.Latitude,
+      Longitude: forms.Longitude,
+      Area_width: forms.Area_width,
+      Area_road: forms.Area_road,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
+    }
+    setForms(FromValues)
+  }
+
+  const handleChange_Owner_Tell = (event) => {
+    event.preventDefault();
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: event.target.value,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -196,6 +223,8 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: event.target.value,
@@ -213,6 +242,8 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -260,6 +291,8 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -277,6 +310,8 @@ export default function SignUp() {
       Name: forms.Name,
       Tell: forms.Tell,
       Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
       Latitude: forms.Latitude,
       Longitude: forms.Longitude,
       Area_width: forms.Area_width,
@@ -313,13 +348,13 @@ export default function SignUp() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                ลงทะเบียน
+                ลงทะเบียนผู้แจ้ง
               </Typography>
               <Box component="form" noValidate sx={{ mt: 2 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant="body2" sx={{ pb: 1 }} color={checked_name === 1 ? null : "error"}>
-                      ชื่อจริง-นามสุกล
+                      ชื่อจริง-นามสุกล (ผู้แจ้ง)
                     </Typography>
                     <TextField
                       size="small"
@@ -328,7 +363,6 @@ export default function SignUp() {
                       required
                       fullWidth
                       id="firstName"
-                      //variant="standard"
                       autoFocus
                       value={forms.Name}
                       onChange={handleChange_remind_name}
@@ -338,7 +372,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" sx={{ pb: 1 }} color={checked_tel === 1 ? null : "error"}>
-                      เบอร์โทรติดต่อ
+                      เบอร์โทรติดต่อ (ผู้แจ้ง)
                     </Typography>
                     <TextField
                       size="small"
@@ -346,8 +380,6 @@ export default function SignUp() {
                       fullWidth
                       id="tel"
                       name="tel"
-                      //variant="standard"
-                      autoComplete="tel"
                       value={forms.Tell}
                       onChange={handleChange_tel}
                       error={checked_tel === 1 ? false : true}
@@ -356,20 +388,47 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" sx={{ pb: 1 }} color={checked_email === 1 ? null : "error"}>
-                      อีเมล
+                      อีเมล (ผู้แจ้ง)
                     </Typography>
                     <TextField
                       size="small"
                       required
                       fullWidth
                       id="email"
-                      //variant="standard"
                       name="email"
                       autoComplete="email"
                       value={forms.Email}
                       onChange={handleChange_email}
                       error={checked_email === 1 ? false : true}
                       helperText={checked_email === 1 ? null : "Incorrect entry."}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" sx={{ pb: 1 }}>
+                      ชื่อจริง-นามสกุล (เจ้าของที่ดิน)
+                    </Typography>
+                    <TextField
+                      size="small"
+                      required
+                      fullWidth
+                      id="Owner_Name"
+                      name="Owner_Name"
+                      value={forms.Owner_Name}
+                      onChange={handleChange_Owner_Name}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" sx={{ pb: 1 }} >
+                      เบอร์โทรติดต่อ (เจ้าของที่ดิน)
+                    </Typography>
+                    <TextField
+                      size="small"
+                      required
+                      fullWidth
+                      id="Owner_Tell"
+                      name="Owner_Tell"
+                      value={forms.Owner_Tell}
+                      onChange={handleChange_Owner_Tell}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -522,7 +581,7 @@ export default function SignUp() {
                       onChange={handleChange_land_number}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sx={{ mt: 1 }}>
                     <TextField
                       size="small"
                       fullWidth
