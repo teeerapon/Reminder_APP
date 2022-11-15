@@ -29,6 +29,8 @@ export default function SignUp() {
   const [checked_name, setChecked_name] = React.useState(1)
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
+  const [checked_NumberArea, setChecked_NumberArea] = React.useState(1)
+  const [checked_Latitude_Longitude, setChecked_Latitude_Longitude] = React.useState(1)
   const { coords } =
     useGeolocated({
       positionOptions: {
@@ -87,34 +89,40 @@ export default function SignUp() {
       setChecked_tel(1)
       setChecked_email(1)
     } else {
-      setChecked_name(1)
-      setChecked_tel(1)
-      setChecked_email(1)
+      if (!forms.NumberArea && !forms.Latitude && !forms.Longitude) {
+        alert('กรุณากรอกข้อมูล พิกัดสถานที่ หรือ เลขที่ฉโฉนดที่ดิน')
+        setChecked_NumberArea(0)
+        setChecked_Latitude_Longitude(0)
+      } else {
+        setChecked_name(1)
+        setChecked_tel(1)
+        setChecked_email(1)
 
-      const body = {
-        Name: forms.Name,
-        Tell: forms.Tell,
-        Email: forms.Email,
-        Owner_Name: forms.Owner_Name,
-        Owner_Tell: forms.Owner_Tell,
-        Latitude: forms.Latitude,
-        Longitude: forms.Longitude,
-        Area_width: forms.Area_width,
-        Area_road: forms.Area_road,
-        Area_total: ((!size.farm ? 0 : size.farm) * 1600) + ((!size.work ? 0 : size.work) * 400) + ((!size.wa ? 0 : size.wa) * 4),
-        NumberArea: forms.NumberArea,
-        Remark: forms.Remark,
+        const body = {
+          Name: forms.Name,
+          Tell: forms.Tell,
+          Email: forms.Email,
+          Owner_Name: forms.Owner_Name,
+          Owner_Tell: forms.Owner_Tell,
+          Latitude: forms.Latitude,
+          Longitude: forms.Longitude,
+          Area_width: forms.Area_width,
+          Area_road: forms.Area_road,
+          Area_total: ((!size.farm ? 0 : size.farm) * 1600) + ((!size.work ? 0 : size.work) * 400) + ((!size.wa ? 0 : size.wa) * 4),
+          NumberArea: forms.NumberArea,
+          Remark: forms.Remark,
+        }
+        const headers = {
+          'Authorization': 'application/json; charset=utf-8',
+          'Accept': 'application/json'
+        };
+        Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
+          .then(response => {
+            if (response) {
+              navigate('/Successfully_Page')
+            }
+          })
       }
-      const headers = {
-        'Authorization': 'application/json; charset=utf-8',
-        'Accept': 'application/json'
-      };
-      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
-        .then(response => {
-          if (response) {
-            navigate('/Successfully_Page')
-          }
-        })
     }
   }
 
@@ -428,8 +436,8 @@ export default function SignUp() {
                       onChange={handleChange_Owner_Tell}
                     />
                   </Grid>
-                  {/* <Grid item xs={12}>
-                    <Typography variant="body2" sx={{ pb: 1 }}>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" sx={{ pb: 1 }} color={checked_Latitude_Longitude === 1 ? null : "error"}>
                       พิกัดสถานที่
                     </Typography>
                     <TextField
@@ -439,6 +447,8 @@ export default function SignUp() {
                       name="gps"
                       id="gps"
                       value={!forms.Latitude ? null : `${forms.Latitude}, ${forms.Longitude}`}
+                      error={checked_Latitude_Longitude === 1 ? false : true}
+                      helperText={checked_Latitude_Longitude === 1 ? null : "Incorrect entry."}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="start">
@@ -450,7 +460,23 @@ export default function SignUp() {
                         ),
                       }}
                     />
-                  </Grid> */}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body2" sx={{ pb: 1 }} color={checked_NumberArea === 1 ? null : "error"}>
+                      เลขที่ฉโฉนดที่ดิน
+                    </Typography>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      //variant="standard"
+                      name="land_number"
+                      id="land_number"
+                      value={forms.NumberArea}
+                      onChange={handleChange_land_number}
+                      error={checked_NumberArea === 1 ? false : true}
+                      helperText={checked_NumberArea === 1 ? null : "Incorrect entry."}
+                    />
+                  </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2">
                       ขนาดพื้นที่
@@ -562,20 +588,6 @@ export default function SignUp() {
                           </React.Fragment>
                         ),
                       }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" sx={{ pb: 1 }}>
-                      เลขที่ดิน
-                    </Typography>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      //variant="standard"
-                      name="land_number"
-                      id="land_number"
-                      value={forms.NumberArea}
-                      onChange={handleChange_land_number}
                     />
                   </Grid>
                   <Grid item xs={12} sx={{ mt: 1 }}>
