@@ -17,6 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Outlet, useNavigate } from "react-router";
 import AnimatedPage from './AnimatedPage';
 import Axios from "axios"
+import { useGeolocated } from "react-geolocated";
 
 const theme = createTheme();
 
@@ -28,31 +29,30 @@ export default function SignUp() {
   const [checked_name, setChecked_name] = React.useState(1)
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
+  const { coords } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: false,
+      },
+      userDecisionTimeout: 5000,
+    });
 
   const getLocation = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser');
-    } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const FromValues = {
-          Name: forms.Name,
-          Tell: forms.Tell,
-          Email: forms.Email,
-          Owner_Name: forms.Owner_Name,
-          Owner_Tell: forms.Owner_Tell,
-          Latitude: position.coords.latitude,
-          Longitude: position.coords.longitude,
-          Area_width: forms.Area_width,
-          Area_road: forms.Area_road,
-          Area_total: forms.Area_total,
-          NumberArea: forms.NumberArea,
-          Remark: forms.Remark,
-        }
-        setForms(FromValues)
-      }, () => {
-        alert('Unable to retrieve your location');
-      });
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: coords.latitude,
+      Longitude: coords.longitude,
+      Area_width: forms.Area_width,
+      Area_road: forms.Area_road,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
     }
+    setForms(FromValues)
   }
 
 

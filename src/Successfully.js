@@ -4,12 +4,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
-import { Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import AnimatedPage from './AnimatedPage';
-import Button from '@mui/material/Button';
 
 function Copyright() {
-  const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary">
       {'ส่งคำตอบเพิ่มเติม © '}
