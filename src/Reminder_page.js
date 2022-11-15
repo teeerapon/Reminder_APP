@@ -29,35 +29,32 @@ export default function SignUp() {
   const [checked_tel, setChecked_tel] = React.useState(1)
   const [checked_email, setChecked_email] = React.useState(1)
 
-  const onSuccess = (location) => {
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: location.coords.latitude,
-      Longitude: location.coords.longitude,
-      Area_width: forms.Area_width,
-      Area_road: forms.Area_road,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-    }
-    setForms(FromValues)
-  };
-
-  const getUserGeolocationDetails = (event) => {
-    event.preventDefault();
-    if (!("geolocation" in navigator)) {
-      alert({
-        code: 0,
-        message: "Geolocation not supported",
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+    } else {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const FromValues = {
+          Name: forms.Name,
+          Tell: forms.Tell,
+          Email: forms.Email,
+          Owner_Name: forms.Owner_Name,
+          Owner_Tell: forms.Owner_Tell,
+          Latitude: position.coords.latitude,
+          Longitude: position.coords.longitude,
+          Area_width: forms.Area_width,
+          Area_road: forms.Area_road,
+          Area_total: forms.Area_total,
+          NumberArea: forms.NumberArea,
+          Remark: forms.Remark,
+        }
+        setForms(FromValues)
+      }, () => {
+        alert('Unable to retrieve your location');
       });
     }
+  }
 
-    navigator.geolocation.getCurrentPosition(onSuccess);
-  };
 
   const handle_sumbitForms = (event) => {
     event.preventDefault();
@@ -446,7 +443,7 @@ export default function SignUp() {
                         endAdornment: (
                           <InputAdornment position="start">
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <IconButton type="button" sx={{ p: '10px' }} color="primary" onClick={getUserGeolocationDetails}>
+                            <IconButton type="button" sx={{ p: '10px' }} color="primary" onClick={getLocation}>
                               <DirectionsIcon />
                             </IconButton>
                           </InputAdornment>
