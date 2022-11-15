@@ -468,7 +468,7 @@ export default function SignUp() {
                         endAdornment: (
                           <React.Fragment>
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <Typography variant="body2" sx={{ pr: 2 }}>
+                            <Typography variant="body2" >
                               ไร่
                             </Typography>
                           </React.Fragment>
@@ -488,7 +488,7 @@ export default function SignUp() {
                         endAdornment: (
                           <React.Fragment>
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <Typography variant="body2" sx={{ pr: 2 }}>
+                            <Typography variant="body2">
                               งาน
                             </Typography>
                           </React.Fragment>
@@ -508,7 +508,7 @@ export default function SignUp() {
                         endAdornment: (
                           <React.Fragment>
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <Typography variant="body2" sx={{ pr: 2 }}>
+                            <Typography variant="body2">
                               ตร.ว.
                             </Typography>
                           </React.Fragment>
@@ -532,7 +532,7 @@ export default function SignUp() {
                         endAdornment: (
                           <React.Fragment>
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <Typography variant="body2" sx={{ pr: 2 }}>
+                            <Typography variant="body2">
                               เมตร
                             </Typography>
                           </React.Fragment>
@@ -556,7 +556,7 @@ export default function SignUp() {
                         endAdornment: (
                           <React.Fragment>
                             <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                            <Typography variant="body2" sx={{ pr: 2 }}>
+                            <Typography variant="body2">
                               เมตร
                             </Typography>
                           </React.Fragment>
