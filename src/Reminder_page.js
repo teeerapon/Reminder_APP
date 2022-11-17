@@ -56,7 +56,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001//api/Provinces_List', { headers })
+    Axios.get('http://vpnptec.dyndns.org:32001/api/Provinces_List', { headers })
       .then(response => setProvinces_List(response.data));
 
 
@@ -112,7 +112,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001//api/Districts_List', { headers })
+    Axios.get('http://vpnptec.dyndns.org:32001/api/Districts_List', { headers })
       .then(response => {
         setDistricts_List(Array.prototype.filter.call((response.data), (x) => x.amphure_id == name.props.name))
         setChecked_District(1)
@@ -147,7 +147,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001//api/Amphures_List', { headers })
+    Axios.get('http://vpnptec.dyndns.org:32001/api/Amphures_List', { headers })
       .then(response => {
         setAmphures_List(Array.prototype.filter.call((response.data), (x) => x.province_id == name.props.name))
       });
@@ -219,7 +219,7 @@ export default function SignUp() {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-      Axios.post('http://vpnptec.dyndns.org:32001//api/NewNTI_Station_Create', body, { headers })
+      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
           if (response) {
             navigate('/Successfully_Page')
