@@ -11,7 +11,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
-import InputAdornment from '@mui/material/InputAdornment';
 import { Outlet, useNavigate } from "react-router";
 import AnimatedPage from './AnimatedPage';
 import Axios from "axios"
@@ -21,13 +20,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 const theme = createTheme();
 
 export default function SignUp() {
 
-  const [forms, setForms] = React.useState([{ Name: "", Tell: "", Email: "", Owner_Name: "", Owner_Tell: "", Latitude: "", Longitude: "", Area_width: "", Area_total: "", NumberArea: "", Remark: "", Tambol: "", District: "", Province: "", Postcode: "" }]);
+  const [forms, setForms] = React.useState([{ Name: "", Tell: "", Email: "", Owner_Name: "", Owner_Tell: "", Area_width: "", Area_total: "", NumberArea: "", Remark: "", Tambol: "", District: "", Province: "", Postcode: "", sum_la_lo: "" }]);
   const [size, setSize] = React.useState([{ farm: "", work: "", wa: "" }])
   const navigate = useNavigate();
   const [checked_name, setChecked_name] = React.useState(1)
@@ -41,7 +40,6 @@ export default function SignUp() {
   const [checked_Province, setChecked_Province] = React.useState(1)
   const [checked_Postcode, setChecked_Postcode] = React.useState(1)
   const [checked_Latitude, setChecked_Latitude] = React.useState(1)
-  const [checked_Longitude, setChecked_Longitude] = React.useState(1)
   const [showOwner, setShowOwner] = React.useState(false)
   const [value, setValue] = React.useState('');
   const [showGPS, setShowGPS] = React.useState(false)
@@ -56,7 +54,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001/api/Provinces_List', { headers })
+    Axios.get('http://192.168.220.1:32001/api/Provinces_List', { headers })
       .then(response => setProvinces_List(response.data));
 
 
@@ -70,8 +68,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -79,7 +75,8 @@ export default function SignUp() {
       Tambol: event.target.value,
       District: forms.District,
       Province: forms.Province,
-      Postcode: name.props.name
+      Postcode: name.props.name,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_Tambol(1)
@@ -94,8 +91,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -103,7 +98,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: event.target.value,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
 
@@ -112,7 +108,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001/api/Districts_List', { headers })
+    Axios.get('http://192.168.220.1:32001/api/Districts_List', { headers })
       .then(response => {
         setDistricts_List(Array.prototype.filter.call((response.data), (x) => x.amphure_id == name.props.name))
         setChecked_District(1)
@@ -129,8 +125,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -138,7 +132,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: event.target.value,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
 
@@ -147,7 +142,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001/api/Amphures_List', { headers })
+    Axios.get('http://192.168.220.1:32001/api/Amphures_List', { headers })
       .then(response => {
         setAmphures_List(Array.prototype.filter.call((response.data), (x) => x.province_id == name.props.name))
       });
@@ -178,14 +173,12 @@ export default function SignUp() {
       setChecked_Owner_Name(0)
       setChecked_Owner_Tell(0)
     } else if (showGPS === false) {
-      alert('กรุณาระบุข้อมูล' + valueGPS)
       alert('กรุณาระบุประเภทของที่ดิน')
-    } else if (!forms.NumberArea && !forms.Latitude && !forms.Longitude) {
+    } else if (!forms.NumberArea && !forms.sum_la_lo) {
       alert('กรุณาระบุข้อมูลพิกัดสถานที่หรือเลขที่โฉนดที่ดิน อย่างใดอย่างนึง')
       setChecked_NumberArea(0)
       setChecked_Latitude(0)
-      setChecked_Longitude(0)
-    } else if (!forms.Tambol && !forms.District && !forms.Province && !forms.Postcode) {
+    } else if (!forms.District && !forms.Province) {
       alert('กรุณาระบุข้อมูลข้อมูลที่อยู่ที่ดิน')
       setChecked_Tambol(0)
       setChecked_District(0)
@@ -196,14 +189,17 @@ export default function SignUp() {
       setChecked_tel(1)
       setChecked_email(1)
 
+      const latitude = forms.sum_la_lo.split(',')[0]
+      const logtitude = forms.sum_la_lo.split(',')[1]
+
       const body = {
         Name: forms.Name,
         Tell: forms.Tell,
         Email: forms.Email,
         Owner_Name: forms.Owner_Name,
         Owner_Tell: forms.Owner_Tell,
-        Latitude: forms.Latitude,
-        Longitude: forms.Longitude,
+        Latitude: latitude,
+        Longitude: logtitude,
         Area_width: forms.Area_width,
         Area_total: ((!size.farm ? 0 : size.farm) * 1600) + ((!size.work ? 0 : size.work) * 400) + ((!size.wa ? 0 : size.wa) * 4),
         NumberArea: forms.NumberArea,
@@ -219,7 +215,10 @@ export default function SignUp() {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
+
+
+      console.log('in NewNTI_Station_Create #############');
+      Axios.post('http://192.168.220.1:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
           if (response) {
             navigate('/Successfully_Page')
@@ -238,8 +237,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -247,7 +244,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_name(1)
@@ -261,8 +259,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -270,7 +266,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_tel(1)
@@ -285,8 +282,6 @@ export default function SignUp() {
       Email: event.target.value,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -294,7 +289,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_email(1)
@@ -308,8 +304,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: event.target.value,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -317,7 +311,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_Owner_Name(1)
@@ -331,8 +326,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: event.target.value,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -340,7 +333,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_Owner_Tell(1)
@@ -354,8 +348,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: event.target.value,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -363,7 +355,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
   }
@@ -398,7 +391,7 @@ export default function SignUp() {
     setSize(FromValues)
   }
 
-  const handleChange_Latitude = (event) => {
+  const handleChange_Latitude_Longitude = (event) => {
     event.preventDefault();
     const FromValues = {
       Name: forms.Name,
@@ -406,8 +399,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: event.target.value,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -415,38 +406,11 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: event.target.value
     }
     setForms(FromValues)
-    setChecked_NumberArea(1)
     setChecked_Latitude(1)
-    setChecked_Longitude(1)
-    setChecked_NumberArea(1)
-  }
-
-  const handleChange_Longitude = (event) => {
-    event.preventDefault();
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: event.target.value,
-      Area_width: forms.Area_width,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-      Tambol: forms.Tambol,
-      District: forms.District,
-      Province: forms.Province,
-      Postcode: forms.Postcode
-    }
-    setForms(FromValues)
-    setChecked_NumberArea(1)
-    setChecked_Latitude(1)
-    setChecked_Longitude(1)
     setChecked_NumberArea(1)
   }
 
@@ -458,8 +422,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: event.target.value,
@@ -467,13 +429,12 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
     setChecked_NumberArea(1)
     setChecked_Latitude(1)
-    setChecked_Longitude(1)
-    setChecked_NumberArea(1)
   }
 
   const handleChange_remark = (event) => {
@@ -484,8 +445,6 @@ export default function SignUp() {
       Email: forms.Email,
       Owner_Name: forms.Owner_Name,
       Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
       NumberArea: forms.NumberArea,
@@ -493,7 +452,8 @@ export default function SignUp() {
       Tambol: forms.Tambol,
       District: forms.District,
       Province: forms.Province,
-      Postcode: forms.Postcode
+      Postcode: forms.Postcode,
+      sum_la_lo: forms.sum_la_lo
     }
     setForms(FromValues)
   }
@@ -557,6 +517,7 @@ export default function SignUp() {
                       size="small"
                       required
                       fullWidth
+                      type="number"
                       id="tel"
                       name="tel"
                       value={forms.Tell}
@@ -575,7 +536,7 @@ export default function SignUp() {
                       size="small"
                       required
                       fullWidth
-                      id="email"
+                      type="email"
                       name="email"
                       autoComplete="email"
                       value={forms.Email}
@@ -621,6 +582,7 @@ export default function SignUp() {
                       size="small"
                       required
                       fullWidth
+                      type="number"
                       id="Owner_Tell"
                       name="Owner_Tell"
                       value={forms.Owner_Tell}
@@ -638,61 +600,23 @@ export default function SignUp() {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="body2">
+                    <Typography variant="body2" color={checked_Latitude === 1 ? null : "error"}>
                       พิกัดสถานที่
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <TextField
                       size="small"
                       fullWidth
                       //variant="standard"
-                      name="latitude"
-                      id="latitude"
-                      value={forms.Latitude}
-                      onChange={handleChange_Latitude}
+                      name="latitude_logtitude"
+                      id="latitude_logtitude"
+                      value={forms.sum_la_lo}
+                      onChange={handleChange_Latitude_Longitude}
                       error={checked_Latitude === 1 ? false : true}
                       helperText={checked_Latitude === 1 ? null : "Incorrect entry."}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Typography variant="body2" color="black">
-                              Latitude
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </InputAdornment>
-                        ),
-                      }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      //variant="standard"
-                      name="longitude"
-                      id="longitude"
-                      value={forms.Longitude}
-                      onChange={handleChange_Longitude}
-                      error={checked_Longitude === 1 ? false : true}
-                      helperText={checked_Longitude === 1 ? null : "Incorrect entry."}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Typography variant="body2" color="black">
-                              Longitude
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  {/* <Grid item xs={12} sm={2}>
-                    <Button variant="contained" onClick={getUserLocationFromAPI}>
-                      <DirectionsIcon />
-                    </Button>
-                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_NumberArea === 1 ? null : "error"}>
                       เลขที่โฉนดที่ดิน (แปลงใดแปลงหนึ่ง ถ้ามี)
@@ -733,7 +657,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth disabled={!forms.Province ? true : false} error={checked_District === 0 ? true : false}>
-                      <FormHelperText>อำเภอ</FormHelperText>
+                      <FormHelperText>อำเภอ/เขต</FormHelperText>
                       <Select size="small" onChange={(event, name) => handleChange_amphures_List(event, name)} value={forms.District}>
                         {amphures_List.map((name) => (
                           <MenuItem
@@ -746,7 +670,7 @@ export default function SignUp() {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  {/* <Grid item xs={12} sm={6}>
                     <FormControl fullWidth disabled={!forms.District ? true : false} error={checked_Tambol === 0 ? true : false}>
                       <FormHelperText>ตำบล</FormHelperText>
                       <Select size="small" onChange={(event, name) => handleChange_districts_List(event, name)} value={forms.Tambol}>
@@ -772,7 +696,7 @@ export default function SignUp() {
                         value={forms.Postcode}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2">
                       ขนาดพื้นที่
