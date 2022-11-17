@@ -19,6 +19,9 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 const theme = createTheme();
 
@@ -43,6 +46,113 @@ export default function SignUp() {
   const [value, setValue] = React.useState('');
   const [showGPS, setShowGPS] = React.useState(false)
   const [valueGPS, setValueGPS] = React.useState('');
+  const [provinces_List, setProvinces_List] = React.useState([]);
+  const [amphures_List, setAmphures_List] = React.useState([])
+  const [districts_List, setDistricts_List] = React.useState([]);
+
+  React.useEffect(() => {
+    const headers = {
+      'Authorization': 'application/json; charset=utf-8',
+      'Accept': 'application/json'
+    };
+
+    Axios.get('http://192.168.220.1:32001/api/Provinces_List', { headers })
+      .then(response => setProvinces_List(response.data));
+
+
+  }, []);
+
+  const handleChange_districts_List = (event: SelectChangeEvent, name) => {
+    event.preventDefault();
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: forms.Latitude,
+      Longitude: forms.Longitude,
+      Area_width: forms.Area_width,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
+      Tambol: event.target.value,
+      District: forms.District,
+      Province: forms.Province,
+      Postcode: name.props.name
+    }
+    setForms(FromValues)
+    setChecked_Tambol(1)
+    setChecked_Postcode(1)
+  };
+
+  const handleChange_amphures_List = (event: SelectChangeEvent, name) => {
+    event.preventDefault();
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: forms.Latitude,
+      Longitude: forms.Longitude,
+      Area_width: forms.Area_width,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
+      Tambol: forms.Tambol,
+      District: event.target.value,
+      Province: forms.Province,
+      Postcode: forms.Postcode
+    }
+    setForms(FromValues)
+
+    const headers = {
+      'Authorization': 'application/json; charset=utf-8',
+      'Accept': 'application/json'
+    };
+
+    Axios.get('http://192.168.220.1:32001/api/Districts_List', { headers })
+      .then(response => {
+        setDistricts_List(Array.prototype.filter.call((response.data), (x) => x.amphure_id == name.props.name))
+        setChecked_District(1)
+      });
+
+  };
+
+  const handleChange_provinces_List = (event: SelectChangeEvent, name) => {
+    event.preventDefault();
+    setChecked_Province(1)
+    const FromValues = {
+      Name: forms.Name,
+      Tell: forms.Tell,
+      Email: forms.Email,
+      Owner_Name: forms.Owner_Name,
+      Owner_Tell: forms.Owner_Tell,
+      Latitude: forms.Latitude,
+      Longitude: forms.Longitude,
+      Area_width: forms.Area_width,
+      Area_total: forms.Area_total,
+      NumberArea: forms.NumberArea,
+      Remark: forms.Remark,
+      Tambol: forms.Tambol,
+      District: forms.District,
+      Province: event.target.value,
+      Postcode: forms.Postcode
+    }
+    setForms(FromValues)
+
+    const headers = {
+      'Authorization': 'application/json; charset=utf-8',
+      'Accept': 'application/json'
+    };
+
+    Axios.get('http://192.168.220.1:32001/api/Amphures_List', { headers })
+      .then(response => {
+        setAmphures_List(Array.prototype.filter.call((response.data), (x) => x.province_id == name.props.name))
+      });
+
+  };
 
   const handleChange_ShowOwner = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -57,21 +167,26 @@ export default function SignUp() {
   const handle_sumbitForms = (event) => {
     event.preventDefault();
     if (!forms.Name && !forms.Tell && !forms.Email) {
+      alert('กรุณาระบุข้อมูลผู้แจ้ง')
       setChecked_name(0)
       setChecked_tel(0)
       setChecked_email(0)
     } else if (showOwner === false) {
       alert('กรุณาระบุประเภทของผู้เสนอที่ดิน')
     } else if (!forms.Owner_Name && !forms.Owner_Tell) {
+      alert('กรุณาระบุข้อมูล' + value)
       setChecked_Owner_Name(0)
       setChecked_Owner_Tell(0)
     } else if (showGPS === false) {
+      alert('กรุณาระบุข้อมูล' + valueGPS)
       alert('กรุณาระบุประเภทของที่ดิน')
     } else if (!forms.NumberArea && !forms.Latitude && !forms.Longitude) {
+      alert('กรุณาระบุข้อมูลพิกัดสถานที่หรือเลขที่โฉนดที่ดิน อย่างใดอย่างนึง')
       setChecked_NumberArea(0)
       setChecked_Latitude(0)
       setChecked_Longitude(0)
     } else if (!forms.Tambol && !forms.District && !forms.Province && !forms.Postcode) {
+      alert('กรุณาระบุข้อมูลข้อมูลที่อยู่ที่ดิน')
       setChecked_Tambol(0)
       setChecked_District(0)
       setChecked_Province(0)
@@ -104,10 +219,12 @@ export default function SignUp() {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
+      Axios.post('http://192.168.220.1:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
           if (response) {
             navigate('/Successfully_Page')
+          } else {
+            alert('การบันทึกข้อมูลผิดพลาดกรุณาลองใหม่อีกครั้ง')
           }
         })
     }
@@ -319,7 +436,7 @@ export default function SignUp() {
       Longitude: event.target.value,
       Area_width: forms.Area_width,
       Area_total: forms.Area_total,
-      NumberArea: event.target.value,
+      NumberArea: forms.NumberArea,
       Remark: forms.Remark,
       Tambol: forms.Tambol,
       District: forms.District,
@@ -379,98 +496,6 @@ export default function SignUp() {
       Postcode: forms.Postcode
     }
     setForms(FromValues)
-  }
-
-  const handleChange_Tambol = (event) => {
-    event.preventDefault();
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
-      Area_width: forms.Area_width,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-      Tambol: event.target.value,
-      District: forms.District,
-      Province: forms.Province,
-      Postcode: forms.Postcode
-    }
-    setForms(FromValues)
-    setChecked_Tambol(1)
-  }
-
-  const handleChange_District = (event) => {
-    event.preventDefault();
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
-      Area_width: forms.Area_width,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-      Tambol: forms.Tambol,
-      District: event.target.value,
-      Province: forms.Province,
-      Postcode: forms.Postcode
-    }
-    setForms(FromValues)
-    setChecked_District(1)
-  }
-
-  const handleChange_Province = (event) => {
-    event.preventDefault();
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
-      Area_width: forms.Area_width,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-      Tambol: forms.Tambol,
-      District: forms.District,
-      Province: event.target.value,
-      Postcode: forms.Postcode
-    }
-    setForms(FromValues)
-    setChecked_Province(1)
-  }
-
-  const handleChange_Postcode = (event) => {
-    event.preventDefault();
-    const FromValues = {
-      Name: forms.Name,
-      Tell: forms.Tell,
-      Email: forms.Email,
-      Owner_Name: forms.Owner_Name,
-      Owner_Tell: forms.Owner_Tell,
-      Latitude: forms.Latitude,
-      Longitude: forms.Longitude,
-      Area_width: forms.Area_width,
-      Area_total: forms.Area_total,
-      NumberArea: forms.NumberArea,
-      Remark: forms.Remark,
-      Tambol: forms.Tambol,
-      District: forms.District,
-      Province: forms.Province,
-      Postcode: event.target.value
-    }
-    setForms(FromValues)
-    setChecked_Postcode(1)
   }
 
   return (
@@ -663,9 +688,14 @@ export default function SignUp() {
                       }}
                     />
                   </Grid>
+                  {/* <Grid item xs={12} sm={2}>
+                    <Button variant="contained" onClick={getUserLocationFromAPI}>
+                      <DirectionsIcon />
+                    </Button>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_NumberArea === 1 ? null : "error"}>
-                      เลขที่ฉโฉนดที่ดิน (แปลงใดแปลงหนึ่ง ถ้ามี)
+                      เลขที่โฉนดที่ดิน (แปลงใดแปลงหนึ่ง ถ้ามี)
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -687,92 +717,61 @@ export default function SignUp() {
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      name="Province"
-                      id="Province"
-                      value={forms.Province}
-                      onChange={handleChange_Province}
-                      InputProps={{
-                        startAdornment: (
-                          <React.Fragment>
-                            <Typography variant="body2">
-                              จังหวัด
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </React.Fragment>
-                        ),
-                      }}
-                      error={checked_Province === 1 ? false : true}
-                      helperText={checked_Province === 1 ? null : "Incorrect entry."}
-                    />
+                    <FormControl fullWidth error={checked_Province === 0 ? true : false}>
+                      <FormHelperText>จังหวัด</FormHelperText>
+                      <Select size="small" onChange={(event, name) => handleChange_provinces_List(event, name)} value={forms.Province}>
+                        {provinces_List.map((name) => (
+                          <MenuItem
+                            name={`${name.id}`}
+                            value={`${name.name_th}`}
+                          >
+                            {name.name_th}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      name="District"
-                      id="District"
-                      value={forms.District}
-                      onChange={handleChange_District}
-                      InputProps={{
-                        startAdornment: (
-                          <React.Fragment>
-                            <Typography variant="body2">
-                              อำเภอ
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </React.Fragment>
-                        ),
-                      }}
-                      error={checked_District === 1 ? false : true}
-                      helperText={checked_District === 1 ? null : "Incorrect entry."}
-                    />
+                    <FormControl fullWidth disabled={!forms.Province ? true : false} error={checked_District === 0 ? true : false}>
+                      <FormHelperText>อำเภอ</FormHelperText>
+                      <Select size="small" onChange={(event, name) => handleChange_amphures_List(event, name)} value={forms.District}>
+                        {amphures_List.map((name) => (
+                          <MenuItem
+                            name={name.id}
+                            value={name.name_th}
+                          >
+                            {name.name_th}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      name="Tambol"
-                      id="Tambol"
-                      value={forms.Tambol}
-                      onChange={handleChange_Tambol}
-                      InputProps={{
-                        startAdornment: (
-                          <React.Fragment>
-                            <Typography variant="body2">
-                              ตำบล
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </React.Fragment>
-                        ),
-                      }}
-                      error={checked_Tambol === 1 ? false : true}
-                      helperText={checked_Tambol === 1 ? null : "Incorrect entry."}
-                    />
+                    <FormControl fullWidth disabled={!forms.District ? true : false} error={checked_Tambol === 0 ? true : false}>
+                      <FormHelperText>ตำบล</FormHelperText>
+                      <Select size="small" onChange={(event, name) => handleChange_districts_List(event, name)} value={forms.Tambol}>
+                        {districts_List.map((name) => (
+                          <MenuItem
+                            name={name.zip_code}
+                            value={name.name_th}
+                          >
+                            {name.name_th}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      name="Postcode"
-                      id="Postcode"
-                      value={forms.Postcode}
-                      onChange={handleChange_Postcode}
-                      InputProps={{
-                        startAdornment: (
-                          <React.Fragment>
-                            <Typography variant="body2">
-                              ไปรษณีย์
-                            </Typography>
-                            <Divider sx={{ height: 20, m: 1 }} orientation="vertical" />
-                          </React.Fragment>
-                        ),
-                      }}
-                      error={checked_Postcode === 1 ? false : true}
-                      helperText={checked_Postcode === 1 ? null : "Incorrect entry."}
-                    />
+                    <FormControl fullWidth disabled={!forms.Tambol ? true : false} error={checked_Postcode === 0 ? true : false}>
+                      <FormHelperText>ไปรษณีย์</FormHelperText>
+                      <TextField
+                        size="small"
+                        fullWidth
+                        name="Postcode"
+                        id="Postcode"
+                        value={forms.Postcode}
+                      />
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2">
