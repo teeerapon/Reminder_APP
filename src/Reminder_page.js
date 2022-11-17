@@ -62,7 +62,7 @@ export default function SignUp() {
 
   }, []);
 
-  const handleChange_districts_List = (event: SelectChangeEvent, name) => {
+  const handleChange_districts_List = (event, name) => {
     event.preventDefault();
     const FromValues = {
       Name: forms.Name,
@@ -86,7 +86,7 @@ export default function SignUp() {
     setChecked_Postcode(1)
   };
 
-  const handleChange_amphures_List = (event: SelectChangeEvent, name) => {
+  const handleChange_amphures_List = (event, name) => {
     event.preventDefault();
     const FromValues = {
       Name: forms.Name,
@@ -120,7 +120,7 @@ export default function SignUp() {
 
   };
 
-  const handleChange_provinces_List = (event: SelectChangeEvent, name) => {
+  const handleChange_provinces_List = (event, name) => {
     event.preventDefault();
     setChecked_Province(1)
     const FromValues = {
@@ -154,12 +154,12 @@ export default function SignUp() {
 
   };
 
-  const handleChange_ShowOwner = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange_ShowOwner = (event) => {
     setValue(event.target.value);
     setShowOwner(true);
   };
 
-  const handleChange_ShowGPS = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange_ShowGPS = (event) => {
     setValueGPS(event.target.value);
     setShowGPS(true);
   };
