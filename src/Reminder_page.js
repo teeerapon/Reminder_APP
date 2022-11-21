@@ -196,8 +196,8 @@ export default function SignUp() {
       setChecked_tel(1)
       setChecked_email(1)
 
-      const latitude = forms.sum_la_lo.split(',')[0] ?? null
-      const logtitude = forms.sum_la_lo.split(',')[1] ?? null
+      const latitude = !forms.sum_la_lo ? null : forms.sum_la_lo.split(',')[0]
+      const logtitude = !forms.sum_la_lo ? null : forms.sum_la_lo.split(',')[1]
 
       const body = {
         Name: forms.Name,
@@ -603,15 +603,15 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl>
-                    <RadioGroup row value={valueGPS} onChange={handleChange_ShowGPS}>
+                      <RadioGroup row value={valueGPS} onChange={handleChange_ShowGPS}>
                         <FormControlLabel value="ที่ดินเปล่า" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินเปล่า</Typography>} />
                         <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} />
-                        </RadioGroup>
+                      </RadioGroup>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl>
-                       <RadioGroup row value={valueOfferType} onChange={handleChange_ShowOfferType}>
+                      <RadioGroup row value={valueOfferType} onChange={handleChange_ShowOfferType}>
 
                         <FormControlLabel value="ขาย" control={<Radio size="small" />} label={<Typography variant="body2">ขาย</Typography>} />
                         <FormControlLabel value="เช่า" control={<Radio size="small" />} label={<Typography variant="body2">เช่า</Typography>} />
