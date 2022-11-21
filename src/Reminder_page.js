@@ -196,8 +196,8 @@ export default function SignUp() {
       setChecked_tel(1)
       setChecked_email(1)
 
-      const latitude = forms.sum_la_lo.split(',')[0]
-      const logtitude = forms.sum_la_lo.split(',')[1]
+      const latitude = forms.sum_la_lo.split(',')[0] ?? null
+      const logtitude = forms.sum_la_lo.split(',')[1] ?? null
 
       const body = {
         Name: forms.Name,
