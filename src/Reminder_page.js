@@ -44,6 +44,8 @@ export default function SignUp() {
   const [value, setValue] = React.useState('');
   const [showGPS, setShowGPS] = React.useState(false)
   const [valueGPS, setValueGPS] = React.useState('');
+  const [showOfferType, setShowOfferType] = React.useState(false)
+  const [valueOfferType, setvalueOfferType] = React.useState('');
   const [provinces_List, setProvinces_List] = React.useState([]);
   const [amphures_List, setAmphures_List] = React.useState([])
   const [districts_List, setDistricts_List] = React.useState([]);
@@ -159,6 +161,11 @@ export default function SignUp() {
     setShowGPS(true);
   };
 
+  const handleChange_ShowOfferType = (event) => {
+    setvalueOfferType(event.target.value);
+    setShowOfferType(true);
+  };
+
   const handle_sumbitForms = (event) => {
     event.preventDefault();
     if (!forms.Name && !forms.Tell && !forms.Email) {
@@ -209,8 +216,11 @@ export default function SignUp() {
         Tambol: forms.Tambol,
         District: forms.District,
         Province: forms.Province,
-        Postcode: forms.Postcode
+        Postcode: forms.Postcode,
+        OfferType: valueOfferType
       }
+
+      console.log(body);
       const headers = {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
@@ -593,9 +603,20 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl>
-                      <RadioGroup row value={valueGPS} onChange={handleChange_ShowGPS}>
+                    <RadioGroup row value={valueGPS} onChange={handleChange_ShowGPS}>
                         <FormControlLabel value="ที่ดินเปล่า" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินเปล่า</Typography>} />
                         <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} />
+                        </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl>
+                       <RadioGroup row value={valueOfferType} onChange={handleChange_ShowOfferType}>
+
+                        <FormControlLabel value="ขาย" control={<Radio size="small" />} label={<Typography variant="body2">ขาย</Typography>} />
+                        <FormControlLabel value="เช่า" control={<Radio size="small" />} label={<Typography variant="body2">เช่า</Typography>} />
+                        <FormControlLabel value="ขาย/เช่า" control={<Radio size="small" />} label={<Typography variant="body2">ขาย/เช่า</Typography>} />
+                        <FormControlLabel value="ทำปั้มเอง" control={<Radio size="small" />} label={<Typography variant="body2">ทำปั้มเอง</Typography>} />
                       </RadioGroup>
                     </FormControl>
                   </Grid>
