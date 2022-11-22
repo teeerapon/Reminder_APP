@@ -642,7 +642,7 @@ export default function SignUp() {
                     <FormControl>
                       <RadioGroup value={valueGPS} onChange={handleChange_ShowGPS}>
                         <FormControlLabel value="ที่ดินเปล่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ที่ดินเปล่า</Typography>} />
-                        <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} />
+                        {/* <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} /> */}
                         <FormControlLabel value="ปั้มน้ำมัน" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ปั้มน้ำมัน</Typography>} />
                         <FormControlLabel value="ปั้มแก๊ส" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ปั้มแก๊ส</Typography>} />
                         <Stack direction="row" spacing={1}>
