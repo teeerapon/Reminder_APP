@@ -21,6 +21,7 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
@@ -42,13 +43,19 @@ export default function SignUp() {
   const [checked_Latitude, setChecked_Latitude] = React.useState(1)
   const [showOwner, setShowOwner] = React.useState(false)
   const [value, setValue] = React.useState('');
+  const [valueOwner, setValueOwner] = React.useState('');
   const [showGPS, setShowGPS] = React.useState(false)
   const [valueGPS, setValueGPS] = React.useState('');
+  const [value_GPS, setValue_GPS] = React.useState('');
   const [showOfferType, setShowOfferType] = React.useState(false)
   const [valueOfferType, setvalueOfferType] = React.useState('');
+  const [value_OfferType, setvalue_OfferType] = React.useState('');
   const [provinces_List, setProvinces_List] = React.useState([]);
   const [amphures_List, setAmphures_List] = React.useState([])
   const [districts_List, setDistricts_List] = React.useState([]);
+  const [showOtherOfferType, setShowOtherOfferType] = React.useState(false)
+  const [show_Owner, setShow_Owner] = React.useState(false)
+  const [showValueGPS, setShowValueGPS] = React.useState(false)
 
   React.useEffect(() => {
     const headers = {
@@ -152,19 +159,57 @@ export default function SignUp() {
   };
 
   const handleChange_ShowOwner = (event) => {
-    setValue(event.target.value);
-    setShowOwner(true);
+    if (event.target.value === 'อื่น ๆ') {
+      setValue(event.target.value);
+      setShowOwner(false);
+      setShow_Owner(true)
+      setValueOwner('')
+    } else {
+      setValue(event.target.value);
+      setShowOwner(true);
+      setShow_Owner(false)
+      setValueOwner(event.target.value)
+    }
   };
+
+  const handle_show_Owner = (event) => {
+    setValueOwner(event.target.value);
+    setShowOwner(true);
+  }
 
   const handleChange_ShowGPS = (event) => {
-    setValueGPS(event.target.value);
-    setShowGPS(true);
+    if (event.target.value === 'อื่น ๆ') {
+      setValueGPS(event.target.value);
+      setShowValueGPS(true)
+    } else {
+      setValue_GPS(event.target.value)
+      setValueGPS(event.target.value);
+      setShowGPS(true);
+      setShowValueGPS(false)
+    }
   };
 
+  const handle_showValueGPS = (event) => {
+    setValue_GPS(event.target.value)
+    setShowGPS(true);
+  }
+
   const handleChange_ShowOfferType = (event) => {
-    setvalueOfferType(event.target.value);
-    setShowOfferType(true);
+    if (event.target.value === 'อื่น ๆ') {
+      setvalueOfferType(event.target.value);
+      setShowOtherOfferType(true)
+    } else {
+      setvalue_OfferType(event.target.value)
+      setvalueOfferType(event.target.value);
+      setShowOfferType(true);
+      setShowOtherOfferType(false)
+    }
   };
+
+  const handle_showOtherOfferType = (event) => {
+    setvalue_OfferType(event.target.value)
+    setShowOfferType(true);
+  }
 
   const handle_sumbitForms = (event) => {
     event.preventDefault();
@@ -211,13 +256,13 @@ export default function SignUp() {
         Area_total: ((!size.farm ? 0 : size.farm) * 1600) + ((!size.work ? 0 : size.work) * 400) + ((!size.wa ? 0 : size.wa) * 4),
         NumberArea: forms.NumberArea,
         Remark: forms.Remark,
-        Owner_Type: value,
-        Area_Type: valueGPS,
+        Owner_Type: valueOwner,
+        Area_Type: value_GPS,
         Tambol: forms.Tambol,
         District: forms.District,
         Province: forms.Province,
         Postcode: forms.Postcode,
-        OfferType: valueOfferType
+        OfferType: value_OfferType
       }
 
       console.log(body);
@@ -225,12 +270,9 @@ export default function SignUp() {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-
-
-      console.log('in NewNTI_Station_Create #############');
       Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
-          if (response) {
+          if (response.data[0].RESPONSE !== undefined) {
             navigate('/Successfully_Page')
           } else {
             alert('การบันทึกข้อมูลผิดพลาดกรุณาลองใหม่อีกครั้ง')
@@ -471,17 +513,9 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={theme}>
       <AnimatedPage>
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
           <CssBaseline />
-          <Paper
-            elevation={3}
-            sx={{
-              p: 3,
-              pt: 1,
-              mt: 2,
-              mb: 2,
-            }}
-          >
+          <Paper elevation={3} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
             <Box
               sx={{
                 display: 'flex',
@@ -557,16 +591,19 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl>
-                      <RadioGroup row value={value} onChange={handleChange_ShowOwner}>
-                        <FormControlLabel value="เจ้าของที่ดิน" control={<Radio size="small" />} label={<Typography variant="body2">เจ้าของที่ดิน</Typography>} />
-                        <FormControlLabel value="นายหน้าขายที่ดิน" control={<Radio size="small" />} label={<Typography variant="body2">นายหน้าขายที่ดิน</Typography>} />
-                        {/* <FormControlLabel value="อื่น ๆ" control={<Radio />} label={<Typography variant="body2">อื่น ๆ</Typography>} /> */}
+                      <RadioGroup value={value} onChange={handleChange_ShowOwner}>
+                        <FormControlLabel value="เจ้าของที่ดิน" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">เจ้าของที่ดิน</Typography>} />
+                        <FormControlLabel value="นายหน้าขายที่ดิน" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">นายหน้าขายที่ดิน</Typography>} />
+                        <Stack direction="row" spacing={1}>
+                          <FormControlLabel value="อื่น ๆ" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">อื่น ๆ</Typography>} />
+                          {show_Owner === false ? null : <TextField size='small' variant="outlined" onChange={handle_show_Owner} />}
+                        </Stack>
                       </RadioGroup>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Owner_Name === 1 ? null : "error"}>
-                      ชื่อจริง-นามสกุล {showOwner === true ? `(${value})` : null} *
+                      ชื่อจริง-นามสกุล {showOwner === true ? `(${valueOwner})` : null} *
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -584,7 +621,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Owner_Tell === 1 ? null : "error"}>
-                      เบอร์โทรติดต่อ {showOwner === true ? `(${value})` : null} *
+                      เบอร์โทรติดต่อ {showOwner === true ? `(${valueOwner})` : null} *
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -603,22 +640,28 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl>
-                      <RadioGroup row value={valueGPS} onChange={handleChange_ShowGPS}>
-                        <FormControlLabel value="ที่ดินเปล่า" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินเปล่า</Typography>} />
-                        <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} />
+                      <RadioGroup value={valueGPS} onChange={handleChange_ShowGPS}>
+                        <FormControlLabel value="ที่ดินเปล่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ที่ดินเปล่า</Typography>} />
+                        <FormControlLabel value="ที่ดินพร้อมสิ่งปลูกสร้าง" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ที่ดินพร้อมสิ่งปลูกสร้าง</Typography>} />
+                        <FormControlLabel value="ปั้มน้ำมัน" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ปั้มน้ำมัน</Typography>} />
+                        <FormControlLabel value="ปั้มแก๊ส" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ปั้มแก๊ส</Typography>} />
+                        <Stack direction="row" spacing={1}>
+                          <FormControlLabel value="อื่น ๆ" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">อื่น ๆ</Typography>} />
+                          {!showValueGPS ? null : <TextField size='small' variant="outlined" onChange={handle_showValueGPS} />}
+                        </Stack>
                       </RadioGroup>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl>
-                      <RadioGroup row value={valueOfferType} onChange={handleChange_ShowOfferType}>
-
-                        <FormControlLabel value="ขาย" control={<Radio size="small" />} label={<Typography variant="body2">ขาย</Typography>} />
-                        <FormControlLabel value="เช่า" control={<Radio size="small" />} label={<Typography variant="body2">เช่า</Typography>} />
-                        <FormControlLabel value="ขาย/เช่า" control={<Radio size="small" />} label={<Typography variant="body2">ขาย/เช่า</Typography>} />
-                        <FormControlLabel value="ทำปั้มเอง" control={<Radio size="small" />} label={<Typography variant="body2">ทำปั้มเอง</Typography>} />
-                      </RadioGroup>
-                    </FormControl>
+                    <Divider variant="middle" sx={{ mt: 1, mb: 1 }} />
+                    <RadioGroup value={valueOfferType} onChange={handleChange_ShowOfferType}>
+                      <FormControlLabel value="ขาย" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ขาย</Typography>} />
+                      <FormControlLabel value="ให้เช่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ให้เช่า</Typography>} />
+                      <FormControlLabel value="ขาย/ให้เช่าเช่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ขาย/ให้เช่า</Typography>} />
+                      <FormControlLabel value="ทำปั้มเอง" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ทำปั้มเอง</Typography>} />
+                      <Stack direction="row" spacing={1}>
+                        <FormControlLabel value="อื่น ๆ" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">อื่น ๆ</Typography>} />
+                        {!showOtherOfferType ? null : <TextField size='small' variant="outlined" onChange={handle_showOtherOfferType} />}
+                      </Stack>
+                    </RadioGroup>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Latitude === 1 ? null : "error"}>
