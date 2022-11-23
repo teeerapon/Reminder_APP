@@ -527,13 +527,13 @@ export default function SignUp() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                ลงทะเบียนผู้แจ้ง
+                <b> ลงทะเบียนผู้แจ้ง</b>
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 2 }}>
+              <Box component="form" noValidate sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_name === 1 ? null : "error"}>
-                      ชื่อจริง-นามสุกล (ผู้แจ้ง) *
+                      <b>ชื่อจริง-นามสุกล (ผู้แจ้ง) *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -553,7 +553,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_tel === 1 ? null : "error"}>
-                      เบอร์โทรติดต่อ (ผู้แจ้ง) *
+                      <b>เบอร์โทรติดต่อ (ผู้แจ้ง) *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -572,7 +572,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_email === 1 ? null : "error"}>
-                      อีเมล (ผู้แจ้ง) *
+                      <b> อีเมล (ผู้แจ้ง) *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -603,7 +603,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Owner_Name === 1 ? null : "error"}>
-                      ชื่อจริง-นามสกุล {showOwner === true ? `(${valueOwner})` : null} *
+                      <b>ชื่อจริง-นามสกุล {showOwner === true ? `(${valueOwner})` : null} *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -621,7 +621,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Owner_Tell === 1 ? null : "error"}>
-                      เบอร์โทรติดต่อ {showOwner === true ? `(${valueOwner})` : null} *
+                      <b>เบอร์โทรติดต่อ {showOwner === true ? `(${valueOwner})` : null} *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -665,25 +665,28 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_Latitude === 1 ? null : "error"}>
-                      พิกัดสถานที่
+                      <b> พิกัดสถานที่</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      //variant="standard"
-                      name="latitude_logtitude"
-                      id="latitude_logtitude"
-                      value={forms.sum_la_lo}
-                      onChange={handleChange_Latitude_Longitude}
-                      error={checked_Latitude === 1 ? false : true}
-                      helperText={checked_Latitude === 1 ? null : "Incorrect entry."}
-                    />
+                    <FormControl fullWidth>
+                      <FormHelperText>* ตัวอย่าง : 13.7986048, 100.663296</FormHelperText>
+                      <TextField
+                        size="small"
+                        fullWidth
+                        //variant="standard"
+                        name="latitude_logtitude"
+                        id="latitude_logtitude"
+                        value={forms.sum_la_lo}
+                        onChange={handleChange_Latitude_Longitude}
+                        error={checked_Latitude === 1 ? false : true}
+                        helperText={checked_Latitude === 1 ? null : "Incorrect entry."}
+                      />
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color={checked_NumberArea === 1 ? null : "error"}>
-                      เลขที่โฉนดที่ดิน (แปลงใดแปลงหนึ่ง ถ้ามี)
+                      <b> เลขที่โฉนดที่ดิน (แปลงใดแปลงหนึ่ง ถ้ามี)</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -701,7 +704,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2">
-                      ข้อมูลที่อยู่ที่ดิน *
+                      <b>ข้อมูลที่อยู่ที่ดิน *</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -763,7 +766,7 @@ export default function SignUp() {
                   </Grid> */}
                   <Grid item xs={12}>
                     <Typography variant="body2">
-                      ขนาดพื้นที่
+                      <b> ขนาดพื้นที่</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -828,7 +831,7 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" sx={{ pb: 1 }}>
-                      หน้ากว้าง
+                      <b> หน้ากว้าง</b>
                     </Typography>
                     <TextField
                       size="small"
