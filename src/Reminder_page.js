@@ -92,7 +92,7 @@ export default function SignUp() {
     setChecked_Postcode(1)
   };
 
-  const handleChange_amphures_List = (event, name) => {
+  const handleChange_amphures_List = async (event, name) => {
     event.preventDefault();
     const FromValues = {
       Name: forms.Name,
@@ -117,7 +117,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001/api/Districts_List', { headers })
+    await Axios.get('http://vpnptec.dyndns.org:32001/api/Districts_List', { headers })
       .then(response => {
         setDistricts_List(Array.prototype.filter.call((response.data), (x) => x.amphure_id == name.props.name))
         setChecked_District(1)
@@ -125,7 +125,7 @@ export default function SignUp() {
 
   };
 
-  const handleChange_provinces_List = (event, name) => {
+  const handleChange_provinces_List = async (event, name) => {
     event.preventDefault();
     setChecked_Province(1)
     const FromValues = {
@@ -151,7 +151,7 @@ export default function SignUp() {
       'Accept': 'application/json'
     };
 
-    Axios.get('http://vpnptec.dyndns.org:32001/api/Amphures_List', { headers })
+    await Axios.get('http://vpnptec.dyndns.org:32001/api/Amphures_List', { headers })
       .then(response => {
         setAmphures_List(Array.prototype.filter.call((response.data), (x) => x.province_id == name.props.name))
       });
@@ -211,7 +211,7 @@ export default function SignUp() {
     setShowOfferType(true);
   }
 
-  const handle_sumbitForms = (event) => {
+  const handle_sumbitForms = async (event) => {
     event.preventDefault();
     if (!forms.Name && !forms.Tell && !forms.Email) {
       alert('กรุณาระบุข้อมูลผู้แจ้ง')
@@ -264,13 +264,11 @@ export default function SignUp() {
         Postcode: forms.Postcode,
         OfferType: value_OfferType
       }
-
-      console.log(body);
       const headers = {
         'Authorization': 'application/json; charset=utf-8',
         'Accept': 'application/json'
       };
-      Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
+      await Axios.post('http://vpnptec.dyndns.org:32001/api/NewNTI_Station_Create', body, { headers })
         .then(response => {
           if (response.data[0].RESPONSE !== undefined) {
             navigate('/Successfully_Page')
