@@ -653,7 +653,7 @@ export default function SignUp() {
                     <RadioGroup value={valueOfferType} onChange={handleChange_ShowOfferType}>
                       <FormControlLabel value="ขาย" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ขาย</Typography>} />
                       <FormControlLabel value="ให้เช่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ให้เช่า</Typography>} />
-                      <FormControlLabel value="ขาย/ให้เช่าเช่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ขาย/ให้เช่า</Typography>} />
+                      <FormControlLabel value="ขาย/ให้เช่า" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ขาย/ให้เช่า</Typography>} />
                       <FormControlLabel value="ทำปั้มเอง" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">ทำปั้มเอง</Typography>} />
                       <Stack direction="row" spacing={1}>
                         <FormControlLabel value="อื่น ๆ" control={<Radio size="small" sx={{ ml: 1 }} />} label={<Typography variant="body2">อื่น ๆ</Typography>} />
