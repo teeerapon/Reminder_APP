@@ -56,6 +56,7 @@ export default function SignUp() {
   const [showOtherOfferType, setShowOtherOfferType] = React.useState(false)
   const [show_Owner, setShow_Owner] = React.useState(false)
   const [showValueGPS, setShowValueGPS] = React.useState(false)
+  const [alerts, setAlerts] = React.useState()
 
   React.useEffect(() => {
     const headers = {
@@ -213,28 +214,57 @@ export default function SignUp() {
 
   const handle_sumbitForms = async (event) => {
     event.preventDefault();
-    if (!forms.Name && !forms.Tell && !forms.Email) {
-      alert('กรุณาระบุข้อมูลผู้แจ้ง')
-      setChecked_name(0)
-      setChecked_tel(0)
-      setChecked_email(0)
+    if (!forms.Name || !forms.Tell || !forms.Email || (!forms.Email ? [] : forms.Email).indexOf('@') < 0) {
+
+      if (!forms.Name || !forms.Tell || !forms.Email) {
+        setAlerts('กรุณาระบุข้อมูลผู้แจ้งให้ครบถ้วน')
+      } else if ((!forms.Email ? [] : forms.Email).indexOf('@') < 0) {
+        setAlerts('กรุณาระบุอีเมลให้ถูกต้อง')
+      }
+      alert(alerts)
+      setChecked_name(!forms.Name ? 0 : 1)
+      setChecked_tel(!forms.Tell ? 0 : 1)
+      setChecked_email((!forms.Email || (!forms.Email ? [] : forms.Email).indexOf('@') < 0) ? 0 : 1)
+      document.getElementById('firstName_lastName').scrollIntoView();
+
     } else if (showOwner === false) {
+
       alert('กรุณาระบุประเภทของผู้เสนอที่ดิน')
-    } else if (!forms.Owner_Name && !forms.Owner_Tell) {
-      alert('กรุณาระบุข้อมูล' + value)
-      setChecked_Owner_Name(0)
-      setChecked_Owner_Tell(0)
-    } else if (showGPS === false) {
-      alert('กรุณาระบุประเภทของที่ดิน')
+      document.getElementById('type_of_owner').scrollIntoView();
+
+    } else if (!forms.Owner_Name || !forms.Owner_Tell || !(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) {
+
+      if (!forms.Owner_Name || !forms.Owner_Tell) {
+        setAlerts('กรุณาระบุข้อมูล' + value)
+      } else if (!(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) {
+        setAlerts('กรุณาระบุเบอร์โทร' + value + 'ให้ถูกต้อง')
+      }
+      alert(alerts)
+      setChecked_Owner_Name(!forms.Owner_Name ? 0 : 1)
+      setChecked_Owner_Tell((!forms.Owner_Tell || !(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) ? 0 : 1)
+      document.getElementById('type_of_owner').scrollIntoView();
+
+    } else if (showGPS === false || valueOfferType === '') {
+
+      if (showGPS === false) {
+        setAlerts('กรุณาระบุประเภทของที่ดิน')
+      } else if (valueOfferType === '') {
+        setAlerts('กรุณาระบุประเภทการทำธุรกรรม')
+      }
+      alert(alerts)
+      document.getElementById('type_of_Area').scrollIntoView();
+
     } else if (!forms.NumberArea && !forms.sum_la_lo) {
+
       alert('กรุณาระบุข้อมูลพิกัดสถานที่หรือเลขที่โฉนดที่ดิน อย่างใดอย่างนึง')
-      setChecked_NumberArea(0)
-      setChecked_Latitude(0)
-    } else if (!forms.District && !forms.Province) {
+      setChecked_NumberArea((!forms.NumberArea && !forms.sum_la_lo) ? 0 : 1)
+      setChecked_Latitude((!forms.NumberArea && !forms.sum_la_lo) ? 0 : 1)
+
+    } else if (!forms.District || !forms.Province) {
       alert('กรุณาระบุข้อมูลข้อมูลที่อยู่ที่ดิน')
       setChecked_Tambol(0)
-      setChecked_District(0)
-      setChecked_Province(0)
+      setChecked_District(!forms.District ? 0 : 1)
+      setChecked_Province(!forms.Province ? 0 : 1)
       setChecked_Postcode(0)
     } else {
       setChecked_name(1)
@@ -521,7 +551,7 @@ export default function SignUp() {
                 alignItems: 'center',
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <Avatar id='firstName_lastName' sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -550,7 +580,7 @@ export default function SignUp() {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color={checked_tel === 1 ? null : "error"}>
+                    <Typography id='type_of_owner' variant="body2" color={checked_tel === 1 ? null : "error"}>
                       <b>เบอร์โทรติดต่อ (ผู้แจ้ง) *</b>
                     </Typography>
                   </Grid>
@@ -600,7 +630,7 @@ export default function SignUp() {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="body2" color={checked_Owner_Name === 1 ? null : "error"}>
+                    <Typography variant="body2" id='type_of_Area' color={checked_Owner_Name === 1 ? null : "error"}>
                       <b>ชื่อจริง-นามสกุล {showOwner === true ? `(${valueOwner})` : null} *</b>
                     </Typography>
                   </Grid>
