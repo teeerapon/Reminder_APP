@@ -217,11 +217,10 @@ export default function SignUp() {
     if (!forms.Name || !forms.Tell || !forms.Email || (!forms.Email ? [] : forms.Email).indexOf('@') < 0) {
 
       if (!forms.Name || !forms.Tell || !forms.Email) {
-        setAlerts('กรุณาระบุข้อมูลผู้แจ้งให้ครบถ้วน')
+        alert('กรุณาระบุข้อมูลผู้แจ้งให้ครบถ้วน')
       } else if ((!forms.Email ? [] : forms.Email).indexOf('@') < 0) {
-        setAlerts('กรุณาระบุอีเมลให้ถูกต้อง')
+        alert('กรุณาระบุอีเมลให้ถูกต้อง')
       }
-      alert(alerts)
       setChecked_name(!forms.Name ? 0 : 1)
       setChecked_tel(!forms.Tell ? 0 : 1)
       setChecked_email((!forms.Email || (!forms.Email ? [] : forms.Email).indexOf('@') < 0) ? 0 : 1)
@@ -235,11 +234,10 @@ export default function SignUp() {
     } else if (!forms.Owner_Name || !forms.Owner_Tell || !(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) {
 
       if (!forms.Owner_Name || !forms.Owner_Tell) {
-        setAlerts('กรุณาระบุข้อมูล' + value)
+        alert('กรุณาระบุข้อมูล' + value)
       } else if (!(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) {
-        setAlerts('กรุณาระบุเบอร์โทร' + value + 'ให้ถูกต้อง')
+        alert('กรุณาระบุเบอร์โทร' + value + 'ให้ถูกต้อง')
       }
-      alert(alerts)
       setChecked_Owner_Name(!forms.Owner_Name ? 0 : 1)
       setChecked_Owner_Tell((!forms.Owner_Tell || !(!forms.Owner_Tell ? [] : forms.Owner_Tell)[9]) ? 0 : 1)
       document.getElementById('type_of_owner').scrollIntoView();
@@ -247,11 +245,10 @@ export default function SignUp() {
     } else if (showGPS === false || valueOfferType === '') {
 
       if (showGPS === false) {
-        setAlerts('กรุณาระบุประเภทของที่ดิน')
+        alert('กรุณาระบุประเภทของที่ดิน')
       } else if (valueOfferType === '') {
-        setAlerts('กรุณาระบุประเภทการทำธุรกรรม')
+        alert('กรุณาระบุประเภทการทำธุรกรรม')
       }
-      alert(alerts)
       document.getElementById('type_of_Area').scrollIntoView();
 
     } else if (!forms.NumberArea && !forms.sum_la_lo) {
